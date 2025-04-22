@@ -1,0 +1,34 @@
+# Project Architecture
+
+## Overview
+This tool uses `pyshark` to read `.pcap` files and process packet summaries, allowing filtering, exporting, and suspicious traffic scanning.
+
+### Components
+- **pcap_parser.py**: Core CLI application
+- **PyShark**: Wrapper for tshark packet parsing
+- **TShark**: Used for exporting filtered PCAPs
+- **CSV Writer**: Outputs structured logs for Splunk or Excel
+
+### Flow
+1. CLI accepts user input (file, protocol, etc.)
+2. `pyshark.FileCapture` reads summaries
+3. Optional filtering by protocol
+4. Optional CSV or PCAP output
+5. Suspicious behavior scanner evaluates each packet
+
+# Suspicious Traffic Detection Rules
+
+This tool includes basic behavior-based detection for common suspicious patterns:
+
+## Rules
+| Behavior             | Detection Trigger                         | Severity |
+|----------------------|-------------------------------------------|----------|
+| SYN Scan             | SYN without ACK                           | High     |
+| ARP Probing          | ARP "who-has" from mismatched IPs         | Low      |
+| LLMNR Spoofing       | LLMNR with "is-at" or "who-has" keywords  | Medium   |
+| mDNS Spoofing        | mDNS with "workgroup" keyword             | Medium   |
+| Long DNS Queries     | DNS query strings over 50 characters      | Medium   |
+| Internal Noise       | Protocols like LLMNR, mDNS, NBNS, ARP     | Info     |
+
+## Notes
+These checks are meant to assist in early triage. Not all detections represent active threats.

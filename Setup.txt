@@ -1,0 +1,20 @@
+# Setup Guide (WSL + Ubuntu)
+## Prerequisites
+- WSL installed (Ubuntu 20.04 recommended)
+- Wireshark installed in Windows
+- Python 3.6+ installed in Ubuntu (check with `python3 --version`)
+
+1. Update System
+	sudo apt update && sudo apt upgrade
+2. Install Python + Pip 
+	sudo apt install python3 python3-pip
+3. Install Wireshark CLI 
+	sudo apt install tshark
+4. Install Python Requirements 
+	pip3 install pyshark
+5. Capture PCAP (from Wireshark GUI)
+    1. Open Wireshark in Windows
+    2. Capture traffic, save as .pcap
+    3. Move to sample-captures/ folder in WSL
+6. Run the Tool 
+	python3 pcap_parser.py -f sample-captures/your_file.pcap
